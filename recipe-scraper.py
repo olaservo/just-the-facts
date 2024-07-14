@@ -63,6 +63,31 @@ def scrape_recipe(url, config_name=None):
         'instructions': instructions
     }
 
+def save_recipe_to_file(recipe_data, filename):
+    """
+    Save the recipe data to a text file with proper formatting.
+    """
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(f"Recipe: {recipe_data['title']}\n\n")
+        file.write("Ingredients:\n")
+        for ingredient in recipe_data['ingredients']:
+            file.write(f"  - {ingredient}\n")
+        file.write("\nInstructions:\n")
+        for i, instruction in enumerate(recipe_data['instructions'], 1):
+            file.write(f"  {i}. {instruction}\n")
+
+def print_recipe(recipe_data):
+    """
+    Print the recipe data to the console.
+    """
+    print(f"\nRecipe: {recipe_data['title']}")
+    print("\nIngredients:")
+    for ingredient in recipe_data['ingredients']:
+        print(f"  - {ingredient}")
+    print("\nInstructions:")
+    for i, instruction in enumerate(recipe_data['instructions'], 1):
+        print(f"  {i}. {instruction}")
+
 # Example usage
 if __name__ == "__main__":
     recipe_url = input("Enter the URL of the recipe: ")
@@ -71,13 +96,14 @@ if __name__ == "__main__":
     try:
         recipe_data = scrape_recipe(recipe_url, config_name)
         
-        print(f"\nRecipe: {recipe_data['title']}")
-        print("\nIngredients:")
-        for ingredient in recipe_data['ingredients']:
-            print(f"- {ingredient}")
-        print("\nInstructions:")
-        for i, instruction in enumerate(recipe_data['instructions'], 1):
-            print(f"{i}. {instruction}")
+        # Print the recipe to the console
+        print_recipe(recipe_data)
+        
+        # Save the recipe to a file
+        filename = f"{recipe_data['title'].replace(' ', '_')}.txt"
+        save_recipe_to_file(recipe_data, filename)
+        print(f"\nRecipe saved to {filename}")
+        
     except FileNotFoundError as e:
         print(f"Error: {e}")
         print("Please make sure the configuration file exists in the 'configs' directory.")
