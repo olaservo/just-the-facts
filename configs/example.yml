@@ -1,0 +1,5 @@
+print_url_format: "{url}?print=true"
+selectors:
+  title: "h1.recipe-title"
+  ingredients: "ul.ingredient-list"
+  instructions: "ol.instruction-list"
