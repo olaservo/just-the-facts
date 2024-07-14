@@ -67,7 +67,14 @@ def save_recipe_to_file(recipe_data, filename):
     """
     Save the recipe data to a text file with proper formatting.
     """
-    with open(filename, 'w', encoding='utf-8') as file:
+    # Create the 'output' directory if it doesn't exist
+    output_dir = 'output'
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Construct the full file path
+    file_path = os.path.join(output_dir, filename)
+    
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.write(f"Recipe: {recipe_data['title']}\n\n")
         file.write("Ingredients:\n")
         for ingredient in recipe_data['ingredients']:
@@ -75,6 +82,8 @@ def save_recipe_to_file(recipe_data, filename):
         file.write("\nInstructions:\n")
         for i, instruction in enumerate(recipe_data['instructions'], 1):
             file.write(f"  {i}. {instruction}\n")
+    
+    return file_path
 
 def print_recipe(recipe_data):
     """
@@ -99,10 +108,10 @@ if __name__ == "__main__":
         # Print the recipe to the console
         print_recipe(recipe_data)
         
-        # Save the recipe to a file
+        # Save the recipe to a file in the 'output' directory
         filename = f"{recipe_data['title'].replace(' ', '_')}.txt"
-        save_recipe_to_file(recipe_data, filename)
-        print(f"\nRecipe saved to {filename}")
+        saved_path = save_recipe_to_file(recipe_data, filename)
+        print(f"\nRecipe saved to {saved_path}")
         
     except FileNotFoundError as e:
         print(f"Error: {e}")
